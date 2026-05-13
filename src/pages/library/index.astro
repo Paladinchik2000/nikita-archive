@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../../components/layout/BaseLayout.astro';
+import Card from '../../components/ui/Card.astro';
+
+const books = [
+  {
+    title: 'Reading note',
+    description: 'A compact note on a book, passage, or idea will appear here.',
+    eyebrow: 'Placeholder',
+  },
+  {
+    title: 'Ideas shelf',
+    description: 'Fragments and references collected before fuller entries exist.',
+    eyebrow: 'Placeholder',
+  },
+  {
+    title: 'Short reflection',
+    description: 'A small place for what stayed after reading.',
+    eyebrow: 'Placeholder',
+  },
+];
+---
+
+<BaseLayout
+  title="Library"
+  description="Books, notes, ideas, and short reflections."
+>
+  <section class="page-hero">
+    <p class="eyebrow">Reading</p>
+    <h1>Library</h1>
+    <p>Books, notes, ideas, and short reflections.</p>
+  </section>
+
+  <section class="page-section placeholder-grid" aria-label="Library placeholders">
+    {books.map((book) => <Card {...book} />)}
+  </section>
+</BaseLayout>

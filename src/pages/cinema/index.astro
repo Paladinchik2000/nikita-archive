@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../../components/layout/BaseLayout.astro';
+import Card from '../../components/ui/Card.astro';
+
+const films = [
+  {
+    title: 'Film note',
+    description: 'A remembered scene, a question, and a short review will sit here.',
+    eyebrow: 'Placeholder',
+  },
+  {
+    title: 'Rewatch list',
+    description: 'Films worth returning to, with a sentence on why they remain alive.',
+    eyebrow: 'Placeholder',
+  },
+  {
+    title: 'Recent viewing',
+    description: 'A small record for new watches before content collections are added.',
+    eyebrow: 'Placeholder',
+  },
+];
+---
+
+<BaseLayout
+  title="Cinema"
+  description="Films watched, remembered, questioned, or returned to."
+>
+  <section class="page-hero">
+    <p class="eyebrow">Reviews</p>
+    <h1>Cinema</h1>
+    <p>Films I watched, remembered, questioned, or returned to.</p>
+  </section>
+
+  <section class="page-section placeholder-grid" aria-label="Cinema placeholders">
+    {films.map((film) => <Card {...film} />)}
+  </section>
+</BaseLayout>

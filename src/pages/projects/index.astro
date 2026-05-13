@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../../components/layout/BaseLayout.astro';
+import Card from '../../components/ui/Card.astro';
+
+const projects = [
+  {
+    title: 'Selected project',
+    description: 'A focused project summary with context, role, and outcome.',
+    eyebrow: 'Placeholder',
+  },
+  {
+    title: 'Experiment',
+    description: 'A place for prototypes, sketches, and technical explorations.',
+    eyebrow: 'Placeholder',
+  },
+  {
+    title: 'In progress',
+    description: 'Notes for things being built, tested, or reconsidered.',
+    eyebrow: 'Placeholder',
+  },
+];
+---
+
+<BaseLayout
+  title="Projects"
+  description="Selected projects, experiments, and things being built."
+>
+  <section class="page-hero">
+    <p class="eyebrow">Making</p>
+    <h1>Projects</h1>
+    <p>Selected projects, experiments, and things I am building.</p>
+  </section>
+
+  <section class="page-section placeholder-grid" aria-label="Project placeholders">
+    {projects.map((project) => <Card {...project} />)}
+  </section>
+</BaseLayout>

@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../../components/layout/BaseLayout.astro';
+import Card from '../../components/ui/Card.astro';
+---
+
+<BaseLayout
+  title="Places"
+  description="Visited places and future map notes."
+>
+  <section class="page-hero">
+    <p class="eyebrow">Travel</p>
+    <h1>Places</h1>
+    <p>A map of places I have visited will live here.</p>
+  </section>
+
+  <section class="page-section placeholder-grid" aria-label="Places placeholders">
+    <Card
+      title="Interactive map"
+      description="A future map view will collect cities, routes, memories, and place notes. For now, this remains a quiet placeholder."
+      eyebrow="Coming later"
+    />
+  </section>
+</BaseLayout>

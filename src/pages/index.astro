@@ -1,17 +1,72 @@
 ---
+import BaseLayout from '../components/layout/BaseLayout.astro';
+import Card from '../components/ui/Card.astro';
 
+const sections = [
+  {
+    title: 'About',
+    description: 'A concise note on background, interests, and current direction.',
+    href: '/about',
+    eyebrow: 'Profile',
+  },
+  {
+    title: 'Cinema',
+    description: 'Films watched, remembered, questioned, or returned to.',
+    href: '/cinema',
+    eyebrow: 'Reviews',
+  },
+  {
+    title: 'Library',
+    description: 'Books, notes, ideas, and short reflections gathered over time.',
+    href: '/library',
+    eyebrow: 'Reading',
+  },
+  {
+    title: 'Places',
+    description: 'Visited cities and places, collected as an evolving archive.',
+    href: '/places',
+    eyebrow: 'Travel',
+  },
+  {
+    title: 'Projects',
+    description: 'Selected work, experiments, and things currently being built.',
+    href: '/projects',
+    eyebrow: 'Making',
+  },
+  {
+    title: 'CV',
+    description: 'A compact overview of experience, projects, and skills.',
+    href: '/cv',
+    eyebrow: 'Work',
+  },
+];
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout
+  title="Nikita Paladi"
+  description="A personal archive of films, books, places, projects, and ideas."
+>
+  <section class="hero" aria-labelledby="home-title">
+    <div>
+      <img class="hero-mark" src="/images/brand/logo-p.png" alt="" width="136" height="136" />
+      <p class="eyebrow">Personal Archive</p>
+      <h1 id="home-title">Nikita Paladi</h1>
+      <p>A personal archive of films, books, places, projects, and ideas.</p>
+      <div class="hero-actions">
+        <a class="button button-primary" href="/about">Enter Archive</a>
+        <a class="button button-secondary" href="/cv">View CV</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-block" aria-labelledby="archive-sections">
+    <div class="section-heading">
+      <p class="eyebrow">Index</p>
+      <h2 id="archive-sections">Archive sections</h2>
+      <p>Quiet rooms for personal notes, references, reviews, and selected work.</p>
+    </div>
+    <div class="section-grid">
+      {sections.map((section) => <Card {...section} />)}
+    </div>
+  </section>
+</BaseLayout>
