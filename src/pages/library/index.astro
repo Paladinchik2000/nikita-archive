@@ -1,24 +1,12 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../../components/layout/BaseLayout.astro';
-import Card from '../../components/ui/Card.astro';
 
-const books = [
-  {
-    title: 'Reading note',
-    description: 'A compact note on a book, passage, or idea will appear here.',
-    eyebrow: 'Placeholder',
-  },
-  {
-    title: 'Ideas shelf',
-    description: 'Fragments and references collected before fuller entries exist.',
-    eyebrow: 'Placeholder',
-  },
-  {
-    title: 'Short reflection',
-    description: 'A small place for what stayed after reading.',
-    eyebrow: 'Placeholder',
-  },
-];
+const books = (await getCollection('books')).sort(
+  (a, b) => (b.data.year ?? 0) - (a.data.year ?? 0),
+);
+
+const getEntrySlug = (entry) => entry.id;
 ---
 
 <BaseLayout
@@ -31,7 +19,26 @@ const books = [
     <p>Books, notes, ideas, and short reflections.</p>
   </section>
 
-  <section class="page-section placeholder-grid" aria-label="Library placeholders">
-    {books.map((book) => <Card {...book} />)}
+  <section class="page-section placeholder-grid" aria-label="Library entries">
+    {
+      books.map((book) => (
+        <a class="archive-card glass-card" href={`/library/${getEntrySlug(book)}`}>
+          <span class="card-eyebrow">{book.data.author}</span>
+          <h3>{book.data.title}</h3>
+          <div class="meta-row">
+            {book.data.year && <span>{book.data.year}</span>}
+            {book.data.rating && <span>{book.data.rating}/10</span>}
+            {book.data.favorite && <span>Favorite</span>}
+          </div>
+          {book.data.genres && (
+            <div class="chip-list">
+              {book.data.genres.map((genre) => <span class="chip">{genre}</span>)}
+            </div>
+          )}
+          {book.data.description && <p>{book.data.description}</p>}
+          <span class="card-link">Read note</span>
+        </a>
+      ))
+    }
   </section>
 </BaseLayout>

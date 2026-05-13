@@ -1,0 +1,43 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../components/layout/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const books = await getCollection('books');
+
+  return books.map((book) => ({
+    params: { slug: book.id },
+    props: { book },
+  }));
+}
+
+const { book } = Astro.props;
+const { Content } = await render(book);
+---
+
+<BaseLayout
+  title={book.data.title}
+  description={book.data.description ?? `${book.data.title} book note.`}
+>
+  <a class="back-link" href="/library">Back to library</a>
+
+  <section class="page-hero detail-hero">
+    <p class="eyebrow">Library</p>
+    <h1>{book.data.title}</h1>
+    <div class="detail-meta">
+      <span>{book.data.author}</span>
+      {book.data.year && <span>{book.data.year}</span>}
+      {book.data.rating && <span>{book.data.rating}/10</span>}
+    </div>
+    {book.data.genres && (
+      <div class="chip-list">
+        {book.data.genres.map((genre) => <span class="chip">{genre}</span>)}
+      </div>
+    )}
+    {book.data.description && <p>{book.data.description}</p>}
+  </section>
+
+  <article class="prose text-panel glass-card">
+    <Content />
+  </article>
+</BaseLayout>

@@ -1,24 +1,12 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../../components/layout/BaseLayout.astro';
-import Card from '../../components/ui/Card.astro';
 
-const films = [
-  {
-    title: 'Film note',
-    description: 'A remembered scene, a question, and a short review will sit here.',
-    eyebrow: 'Placeholder',
-  },
-  {
-    title: 'Rewatch list',
-    description: 'Films worth returning to, with a sentence on why they remain alive.',
-    eyebrow: 'Placeholder',
-  },
-  {
-    title: 'Recent viewing',
-    description: 'A small record for new watches before content collections are added.',
-    eyebrow: 'Placeholder',
-  },
-];
+const movies = (await getCollection('movies')).sort(
+  (a, b) => b.data.year - a.data.year,
+);
+
+const getEntrySlug = (entry) => entry.id;
 ---
 
 <BaseLayout
@@ -31,7 +19,25 @@ const films = [
     <p>Films I watched, remembered, questioned, or returned to.</p>
   </section>
 
-  <section class="page-section placeholder-grid" aria-label="Cinema placeholders">
-    {films.map((film) => <Card {...film} />)}
+  <section class="page-section placeholder-grid" aria-label="Cinema entries">
+    {
+      movies.map((movie) => (
+        <a class="archive-card glass-card" href={`/cinema/${getEntrySlug(movie)}`}>
+          <span class="card-eyebrow">{movie.data.year}</span>
+          <h3>{movie.data.title}</h3>
+          <div class="meta-row">
+            {movie.data.rating && <span>{movie.data.rating}/10</span>}
+            {movie.data.favorite && <span>Favorite</span>}
+          </div>
+          {movie.data.genres && (
+            <div class="chip-list">
+              {movie.data.genres.map((genre) => <span class="chip">{genre}</span>)}
+            </div>
+          )}
+          {movie.data.description && <p>{movie.data.description}</p>}
+          <span class="card-link">Read note</span>
+        </a>
+      ))
+    }
   </section>
 </BaseLayout>

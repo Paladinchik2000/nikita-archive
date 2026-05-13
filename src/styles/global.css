@@ -364,6 +364,52 @@ a.archive-card:hover {
   margin-bottom: 0;
 }
 
+.meta-row,
+.detail-meta,
+.chip-list,
+.external-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  align-items: center;
+}
+
+.meta-row,
+.detail-meta {
+  margin-bottom: 0.85rem;
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.meta-row span,
+.detail-meta span,
+.chip {
+  display: inline-flex;
+  min-height: 1.8rem;
+  align-items: center;
+  padding: 0.22rem 0.55rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.chip-list {
+  margin-bottom: 1rem;
+}
+
+.chip {
+  color: var(--color-lime);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.favorite-badge {
+  color: #16110c;
+  background: linear-gradient(135deg, var(--color-thermal-orange), var(--color-lime));
+  border-color: transparent;
+}
+
 .card-link {
   margin-top: auto;
   padding-top: 1.4rem;
@@ -382,6 +428,23 @@ a.archive-card:hover {
   font-size: clamp(3.2rem, 9vw, 6.5rem);
 }
 
+.detail-hero {
+  padding-top: clamp(2rem, 5vw, 4rem);
+}
+
+.back-link {
+  display: inline-flex;
+  width: fit-content;
+  margin-bottom: 1rem;
+  color: var(--color-lime);
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.back-link:hover {
+  color: var(--color-acid-green);
+}
+
 .text-panel {
   padding: clamp(1.1rem, 3vw, 1.6rem);
 }
@@ -393,6 +456,28 @@ a.archive-card:hover {
 
 .text-panel p:last-child {
   margin-bottom: 0;
+}
+
+.prose {
+  max-width: 760px;
+}
+
+.prose h2 {
+  margin-bottom: 0.75rem;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  line-height: 1.05;
+}
+
+.prose p {
+  font-size: 1.02rem;
+}
+
+.prose p + p {
+  margin-top: 1rem;
+}
+
+.external-links {
+  margin-top: 1.5rem;
 }
 
 @media (max-width: 860px) {

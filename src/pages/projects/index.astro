@@ -1,24 +1,12 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../../components/layout/BaseLayout.astro';
-import Card from '../../components/ui/Card.astro';
 
-const projects = [
-  {
-    title: 'Selected project',
-    description: 'A focused project summary with context, role, and outcome.',
-    eyebrow: 'Placeholder',
-  },
-  {
-    title: 'Experiment',
-    description: 'A place for prototypes, sketches, and technical explorations.',
-    eyebrow: 'Placeholder',
-  },
-  {
-    title: 'In progress',
-    description: 'Notes for things being built, tested, or reconsidered.',
-    eyebrow: 'Placeholder',
-  },
-];
+const projects = (await getCollection('projects')).sort(
+  (a, b) => (b.data.year ?? 0) - (a.data.year ?? 0),
+);
+
+const getEntrySlug = (entry) => entry.id;
 ---
 
 <BaseLayout
@@ -31,7 +19,24 @@ const projects = [
     <p>Selected projects, experiments, and things I am building.</p>
   </section>
 
-  <section class="page-section placeholder-grid" aria-label="Project placeholders">
-    {projects.map((project) => <Card {...project} />)}
+  <section class="page-section placeholder-grid" aria-label="Project entries">
+    {
+      projects.map((project) => (
+        <a class="archive-card glass-card" href={`/projects/${getEntrySlug(project)}`}>
+          <span class="card-eyebrow">{project.data.status ?? 'Project'}</span>
+          <h3>{project.data.title}</h3>
+          <div class="meta-row">
+            {project.data.year && <span>{project.data.year}</span>}
+          </div>
+          {project.data.tags && (
+            <div class="chip-list">
+              {project.data.tags.map((tag) => <span class="chip">{tag}</span>)}
+            </div>
+          )}
+          {project.data.description && <p>{project.data.description}</p>}
+          <span class="card-link">Read note</span>
+        </a>
+      ))
+    }
   </section>
 </BaseLayout>

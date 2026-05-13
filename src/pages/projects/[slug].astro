@@ -1,0 +1,46 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../components/layout/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+---
+
+<BaseLayout
+  title={project.data.title}
+  description={project.data.description ?? `${project.data.title} project note.`}
+>
+  <a class="back-link" href="/projects">Back to projects</a>
+
+  <section class="page-hero detail-hero">
+    <p class="eyebrow">Projects</p>
+    <h1>{project.data.title}</h1>
+    <div class="detail-meta">
+      {project.data.year && <span>{project.data.year}</span>}
+      {project.data.status && <span>{project.data.status}</span>}
+    </div>
+    {project.data.tags && (
+      <div class="chip-list">
+        {project.data.tags.map((tag) => <span class="chip">{tag}</span>)}
+      </div>
+    )}
+    {project.data.description && <p>{project.data.description}</p>}
+    <div class="external-links">
+      {project.data.url && <a class="button button-secondary" href={project.data.url}>Open project</a>}
+      {project.data.github && <a class="button button-secondary" href={project.data.github}>GitHub</a>}
+    </div>
+  </section>
+
+  <article class="prose text-panel glass-card">
+    <Content />
+  </article>
+</BaseLayout>
