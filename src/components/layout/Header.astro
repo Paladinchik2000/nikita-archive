@@ -1,0 +1,39 @@
+---
+import LanguageSwitcher from '../ui/LanguageSwitcher.astro';
+
+const navItems = [
+  { href: '/', label: 'Home' },
+  { href: '/about', label: 'About' },
+  { href: '/cinema', label: 'Cinema' },
+  { href: '/library', label: 'Library' },
+  { href: '/places', label: 'Places' },
+  { href: '/projects', label: 'Projects' },
+  { href: '/cv', label: 'CV' },
+];
+
+const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
+---
+
+<header class="site-header">
+  <a class="brand-mark" href="/" aria-label="Nikita Paladi home">
+    <img src="/images/brand/logo-p.png" alt="" width="40" height="40" />
+    <span>Nikita Paladi</span>
+  </a>
+
+  <nav class="site-nav" aria-label="Primary navigation">
+    {
+      navItems.map((item) => {
+        const itemPath = item.href.replace(/\/$/, '') || '/';
+        const isActive = currentPath === itemPath;
+
+        return (
+          <a href={item.href} aria-current={isActive ? 'page' : undefined}>
+            {item.label}
+          </a>
+        );
+      })
+    }
+  </nav>
+
+  <LanguageSwitcher />
+</header>

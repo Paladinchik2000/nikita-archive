@@ -1,0 +1,19 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  href?: string;
+  eyebrow?: string;
+}
+
+const { title, description, href, eyebrow } = Astro.props;
+const Component = href ? 'a' : 'article';
+const attributes = href ? { href } : {};
+---
+
+<Component {...attributes} class="archive-card glass-card">
+  {eyebrow && <span class="card-eyebrow">{eyebrow}</span>}
+  <h3>{title}</h3>
+  <p>{description}</p>
+  {href && <span class="card-link">Open</span>}
+</Component>

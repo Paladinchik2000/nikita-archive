@@ -1,0 +1,44 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../components/layout/BaseLayout.astro';
+
+const books = (await getCollection('books')).sort(
+  (a, b) => (b.data.year ?? 0) - (a.data.year ?? 0),
+);
+
+const getEntrySlug = (entry) => entry.id;
+---
+
+<BaseLayout
+  title="Library"
+  description="Books, notes, ideas, and short reflections."
+>
+  <section class="page-hero">
+    <p class="eyebrow">Reading</p>
+    <h1>Library</h1>
+    <p>Books, notes, ideas, and short reflections.</p>
+  </section>
+
+  <section class="page-section placeholder-grid" aria-label="Library entries">
+    {
+      books.map((book) => (
+        <a class="archive-card glass-card" href={`/library/${getEntrySlug(book)}`}>
+          <span class="card-eyebrow">{book.data.author}</span>
+          <h3>{book.data.title}</h3>
+          <div class="meta-row">
+            {book.data.year && <span>{book.data.year}</span>}
+            {book.data.rating && <span>{book.data.rating}/10</span>}
+            {book.data.favorite && <span>Favorite</span>}
+          </div>
+          {book.data.genres && (
+            <div class="chip-list">
+              {book.data.genres.map((genre) => <span class="chip">{genre}</span>)}
+            </div>
+          )}
+          {book.data.description && <p>{book.data.description}</p>}
+          <span class="card-link">Read note</span>
+        </a>
+      ))
+    }
+  </section>
+</BaseLayout>

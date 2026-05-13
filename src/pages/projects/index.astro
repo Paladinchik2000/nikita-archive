@@ -1,0 +1,42 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../components/layout/BaseLayout.astro';
+
+const projects = (await getCollection('projects')).sort(
+  (a, b) => (b.data.year ?? 0) - (a.data.year ?? 0),
+);
+
+const getEntrySlug = (entry) => entry.id;
+---
+
+<BaseLayout
+  title="Projects"
+  description="Selected projects, experiments, and things being built."
+>
+  <section class="page-hero">
+    <p class="eyebrow">Making</p>
+    <h1>Projects</h1>
+    <p>Selected projects, experiments, and things I am building.</p>
+  </section>
+
+  <section class="page-section placeholder-grid" aria-label="Project entries">
+    {
+      projects.map((project) => (
+        <a class="archive-card glass-card" href={`/projects/${getEntrySlug(project)}`}>
+          <span class="card-eyebrow">{project.data.status ?? 'Project'}</span>
+          <h3>{project.data.title}</h3>
+          <div class="meta-row">
+            {project.data.year && <span>{project.data.year}</span>}
+          </div>
+          {project.data.tags && (
+            <div class="chip-list">
+              {project.data.tags.map((tag) => <span class="chip">{tag}</span>)}
+            </div>
+          )}
+          {project.data.description && <p>{project.data.description}</p>}
+          <span class="card-link">Read note</span>
+        </a>
+      ))
+    }
+  </section>
+</BaseLayout>

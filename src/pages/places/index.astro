@@ -1,0 +1,43 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../components/layout/BaseLayout.astro';
+
+const places = (await getCollection('places')).sort((a, b) =>
+  a.data.title.localeCompare(b.data.title),
+);
+
+const getEntrySlug = (entry) => entry.id;
+---
+
+<BaseLayout
+  title="Places"
+  description="Visited places and future map notes."
+>
+  <section class="page-hero">
+    <p class="eyebrow">Travel</p>
+    <h1>Places</h1>
+    <p>A map of places I have visited will live here.</p>
+  </section>
+
+  <section class="page-section placeholder-grid" aria-label="Places entries">
+    {
+      places.map((place) => (
+        <a class="archive-card glass-card" href={`/places/${getEntrySlug(place)}`}>
+          <span class="card-eyebrow">{place.data.country}</span>
+          <h3>{place.data.title}</h3>
+          <div class="meta-row">
+            {place.data.city && <span>{place.data.city}</span>}
+            {place.data.visitedAt && <span>{place.data.visitedAt}</span>}
+          </div>
+          {place.data.tags && (
+            <div class="chip-list">
+              {place.data.tags.map((tag) => <span class="chip">{tag}</span>)}
+            </div>
+          )}
+          {place.data.description && <p>{place.data.description}</p>}
+          <span class="card-link">Read note</span>
+        </a>
+      ))
+    }
+  </section>
+</BaseLayout>

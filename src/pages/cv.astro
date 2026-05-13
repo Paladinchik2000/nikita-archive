@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../components/layout/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="CV"
+  description="A concise overview of experience, projects, and skills."
+>
+  <section class="page-hero">
+    <p class="eyebrow">Work</p>
+    <h1>CV</h1>
+    <p>A concise overview of experience, projects, and skills.</p>
+    <div class="page-actions">
+      <a class="button button-primary" href="/files/cv.pdf">Open PDF</a>
+    </div>
+  </section>
+
+  <section class="page-section content-list" aria-label="CV placeholders">
+    <article class="text-panel glass-card">
+      <h2>Experience</h2>
+      <p>Selected experience and role summaries will be added here.</p>
+    </article>
+    <article class="text-panel glass-card">
+      <h2>Projects</h2>
+      <p>Relevant work and project highlights will connect back to the archive.</p>
+    </article>
+    <article class="text-panel glass-card">
+      <h2>Skills</h2>
+      <p>A compact skills overview will be refined as the CV content takes shape.</p>
+    </article>
+  </section>
+</BaseLayout>
