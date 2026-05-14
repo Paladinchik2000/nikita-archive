@@ -1,0 +1,73 @@
+---
+import BaseLayout from '../../components/layout/BaseLayout.astro';
+import Card from '../../components/ui/Card.astro';
+import { useTranslations } from '../../i18n/utils';
+
+const lang = 'ru';
+const t = useTranslations(lang);
+
+const sections = [
+  {
+    title: t('pages.about'),
+    description: 'Коротко о фоне, интересах и текущем направлении.',
+    href: '/ru/about',
+    eyebrow: 'Профиль',
+  },
+  {
+    title: t('pages.cinema'),
+    description: 'Фильмы, которые запомнились, вызвали вопросы или вернулись позже.',
+    href: '/ru/cinema',
+    eyebrow: 'Отзывы',
+  },
+  {
+    title: t('pages.library'),
+    description: 'Книги, заметки, идеи и короткие размышления.',
+    href: '/ru/library',
+    eyebrow: 'Чтение',
+  },
+  {
+    title: t('pages.places'),
+    description: 'Посещенные города и места в виде растущего архива.',
+    href: '/ru/places',
+    eyebrow: 'Путешествия',
+  },
+  {
+    title: t('pages.projects'),
+    description: 'Выбранные работы, эксперименты и проекты в процессе.',
+    href: '/ru/projects',
+    eyebrow: 'Работа',
+  },
+  {
+    title: t('pages.cv'),
+    description: 'Краткий обзор опыта, проектов и навыков.',
+    href: '/ru/cv',
+    eyebrow: 'CV',
+  },
+];
+---
+
+<BaseLayout title={t('home.title')} description={t('home.description')} lang={lang}>
+  <section class="hero" aria-labelledby="home-title">
+    <div>
+      <img class="hero-mark" src="/images/brand/logo-p.png" alt="" width="136" height="136" />
+      <p class="eyebrow">{t('common.personalArchive')}</p>
+      <h1 id="home-title">{t('home.title')}</h1>
+      <p>{t('home.description')}</p>
+      <div class="hero-actions">
+        <a class="button button-primary" href="/ru/about">{t('home.enterArchive')}</a>
+        <a class="button button-secondary" href="/ru/cv">{t('home.viewCv')}</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-block" aria-labelledby="archive-sections">
+    <div class="section-heading">
+      <p class="eyebrow">{t('common.index')}</p>
+      <h2 id="archive-sections">{t('home.sectionsTitle')}</h2>
+      <p>{t('home.sectionsDescription')}</p>
+    </div>
+    <div class="section-grid">
+      {sections.map((section) => <Card {...section} />)}
+    </div>
+  </section>
+</BaseLayout>

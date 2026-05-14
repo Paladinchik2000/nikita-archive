@@ -1,21 +1,31 @@
 ---
 import LanguageSwitcher from '../ui/LanguageSwitcher.astro';
+import type { Locale } from '../../i18n/ui';
+import { getAlternateLocaleUrl, getLocalizedUrl, stripLocaleFromPath, useTranslations } from '../../i18n/utils';
 
+interface Props {
+  lang?: Locale;
+}
+
+const { lang = 'en' } = Astro.props;
+const t = useTranslations(lang);
 const navItems = [
-  { href: '/', label: 'Home' },
-  { href: '/about', label: 'About' },
-  { href: '/cinema', label: 'Cinema' },
-  { href: '/library', label: 'Library' },
-  { href: '/places', label: 'Places' },
-  { href: '/projects', label: 'Projects' },
-  { href: '/cv', label: 'CV' },
+  { href: '/', label: t('nav.home') },
+  { href: '/about', label: t('nav.about') },
+  { href: '/cinema', label: t('nav.cinema') },
+  { href: '/library', label: t('nav.library') },
+  { href: '/places', label: t('nav.places') },
+  { href: '/projects', label: t('nav.projects') },
+  { href: '/cv', label: t('nav.cv') },
 ];
 
-const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
+const currentPath = stripLocaleFromPath(Astro.url.pathname);
+const currentUrl = getLocalizedUrl(currentPath, lang);
+const alternateUrl = getAlternateLocaleUrl(Astro.url.pathname, lang);
 ---
 
 <header class="site-header">
-  <a class="brand-mark" href="/" aria-label="Nikita Paladi home">
+  <a class="brand-mark" href={getLocalizedUrl('/', lang)} aria-label="Nikita Paladi home">
     <img src="/images/brand/logo-p.png" alt="" width="40" height="40" />
     <span>Nikita Paladi</span>
   </a>
@@ -27,7 +37,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
         const isActive = currentPath === itemPath;
 
         return (
-          <a href={item.href} aria-current={isActive ? 'page' : undefined}>
+          <a href={getLocalizedUrl(item.href, lang)} aria-current={isActive ? 'page' : undefined}>
             {item.label}
           </a>
         );
@@ -35,5 +45,5 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
     }
   </nav>
 
-  <LanguageSwitcher />
+  <LanguageSwitcher lang={lang} currentUrl={currentUrl} alternateUrl={alternateUrl} />
 </header>

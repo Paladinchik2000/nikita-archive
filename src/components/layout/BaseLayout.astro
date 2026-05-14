@@ -1,20 +1,22 @@
 ---
 import Header from './Header.astro';
 import Footer from './Footer.astro';
+import type { Locale } from '../../i18n/ui';
 import '../../styles/global.css';
 
 interface Props {
   title: string;
   description: string;
+  lang?: Locale;
 }
 
-const { title, description } = Astro.props;
+const { title, description, lang = 'en' } = Astro.props;
 const siteName = 'Nikita Paladi';
 const pageTitle = title === siteName ? siteName : `${title} | ${siteName}`;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -30,11 +32,11 @@ const pageTitle = title === siteName ? siteName : `${title} | ${siteName}`;
   </head>
   <body>
     <div class="site-shell">
-      <Header />
+      <Header lang={lang} />
       <main id="main-content" class="site-main">
         <slot />
       </main>
-      <Footer />
+      <Footer lang={lang} />
     </div>
   </body>
 </html>

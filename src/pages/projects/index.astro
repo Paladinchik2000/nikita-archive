@@ -2,17 +2,21 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../components/layout/BaseLayout.astro';
 import ArchiveCard from '../../components/ui/ArchiveCard.astro';
+import { getContentSlug, useTranslations } from '../../i18n/utils';
 
-const projects = (await getCollection('projects')).sort(
+const lang = 'en';
+const t = useTranslations(lang);
+const projects = (await getCollection('projects')).filter((project) => project.data.lang === lang).sort(
   (a, b) => (b.data.year ?? 0) - (a.data.year ?? 0),
 );
 
-const getEntrySlug = (entry) => entry.id;
+const getEntrySlug = (entry) => getContentSlug(entry);
 ---
 
 <BaseLayout
   title="Projects"
   description="Selected projects, experiments, and things being built."
+  lang={lang}
 >
   <section class="page-hero">
     <p class="eyebrow">Making</p>
@@ -31,6 +35,8 @@ const getEntrySlug = (entry) => entry.id;
           cover={project.data.cover}
           meta={[project.data.year]}
           chips={project.data.tags}
+          actionLabel={t('common.readNote')}
+          noCoverLabel={t('common.noCover')}
         />
       ))
     }

@@ -1,10 +1,10 @@
 ---
 import { getCollection } from 'astro:content';
-import BaseLayout from '../../components/layout/BaseLayout.astro';
-import ArchiveCard from '../../components/ui/ArchiveCard.astro';
-import { getContentSlug, useTranslations } from '../../i18n/utils';
+import BaseLayout from '../../../components/layout/BaseLayout.astro';
+import ArchiveCard from '../../../components/ui/ArchiveCard.astro';
+import { getContentSlug, useTranslations } from '../../../i18n/utils';
 
-const lang = 'en';
+const lang = 'ru';
 const t = useTranslations(lang);
 const books = (await getCollection('books')).filter((book) => book.data.lang === lang).sort(
   (a, b) => (b.data.year ?? 0) - (a.data.year ?? 0),
@@ -13,24 +13,20 @@ const books = (await getCollection('books')).filter((book) => book.data.lang ===
 const getEntrySlug = (entry) => getContentSlug(entry);
 ---
 
-<BaseLayout
-  title="Library"
-  description="Books, notes, ideas, and short reflections."
-  lang={lang}
->
+<BaseLayout title="Библиотека" description="Книги, заметки, идеи и короткие размышления." lang={lang}>
   <section class="page-hero">
-    <p class="eyebrow">Reading</p>
-    <h1>Library</h1>
-    <p>Books, notes, ideas, and short reflections.</p>
+    <p class="eyebrow">Чтение</p>
+    <h1>Библиотека</h1>
+    <p>Книги, заметки, идеи и короткие размышления.</p>
   </section>
 
-  <section class="page-section placeholder-grid" aria-label="Library entries">
+  <section class="page-section placeholder-grid" aria-label="Записи библиотеки">
     {
       books.map((book) => (
         <ArchiveCard
           title={book.data.title}
           description={book.data.description}
-          href={`/library/${getEntrySlug(book)}`}
+          href={`/ru/library/${getEntrySlug(book)}`}
           eyebrow={book.data.author}
           cover={book.data.cover}
           meta={[book.data.year, book.data.rating && `${book.data.rating}/10`, book.data.favorite && t('common.favorite')]}

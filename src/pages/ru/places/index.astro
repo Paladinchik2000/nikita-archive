@@ -1,10 +1,10 @@
 ---
 import { getCollection } from 'astro:content';
-import BaseLayout from '../../components/layout/BaseLayout.astro';
-import ArchiveCard from '../../components/ui/ArchiveCard.astro';
-import { getContentSlug, useTranslations } from '../../i18n/utils';
+import BaseLayout from '../../../components/layout/BaseLayout.astro';
+import ArchiveCard from '../../../components/ui/ArchiveCard.astro';
+import { getContentSlug, useTranslations } from '../../../i18n/utils';
 
-const lang = 'en';
+const lang = 'ru';
 const t = useTranslations(lang);
 const places = (await getCollection('places')).filter((place) => place.data.lang === lang).sort((a, b) =>
   a.data.title.localeCompare(b.data.title),
@@ -13,24 +13,20 @@ const places = (await getCollection('places')).filter((place) => place.data.lang
 const getEntrySlug = (entry) => getContentSlug(entry);
 ---
 
-<BaseLayout
-  title="Places"
-  description="Visited places and future map notes."
-  lang={lang}
->
+<BaseLayout title="Места" description="Посещенные места и будущие заметки для карты." lang={lang}>
   <section class="page-hero">
-    <p class="eyebrow">Travel</p>
-    <h1>Places</h1>
-    <p>A map of places I have visited will live here.</p>
+    <p class="eyebrow">Путешествия</p>
+    <h1>Места</h1>
+    <p>Здесь позже появится карта мест, которые я посетил.</p>
   </section>
 
-  <section class="page-section placeholder-grid" aria-label="Places entries">
+  <section class="page-section placeholder-grid" aria-label="Записи о местах">
     {
       places.map((place) => (
         <ArchiveCard
           title={place.data.title}
           description={place.data.description}
-          href={`/places/${getEntrySlug(place)}`}
+          href={`/ru/places/${getEntrySlug(place)}`}
           eyebrow={place.data.country}
           cover={place.data.cover}
           meta={[place.data.city, place.data.visitedAt]}

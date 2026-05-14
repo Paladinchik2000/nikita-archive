@@ -8,6 +8,7 @@ interface Props {
   meta?: Array<string | number | false | undefined>;
   chips?: string[];
   actionLabel?: string;
+  noCoverLabel?: string;
 }
 
 const {
@@ -19,6 +20,7 @@ const {
   meta = [],
   chips = [],
   actionLabel = 'Read note',
+  noCoverLabel = 'No cover yet',
 } = Astro.props;
 
 const visibleMeta = meta.filter(Boolean);
@@ -27,7 +29,7 @@ const coverStyle = cover ? `--cover-image: url("${cover}")` : undefined;
 
 <a class="archive-card archive-entry-card glass-card" href={href}>
   <div class:list={['archive-cover', { 'has-cover': cover }]} style={coverStyle} aria-hidden="true">
-    {!cover && <span>No cover yet</span>}
+    {!cover && <span>{noCoverLabel}</span>}
   </div>
   <div class="archive-card-body">
     {eyebrow && <span class="card-eyebrow">{eyebrow}</span>}

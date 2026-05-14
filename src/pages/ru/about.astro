@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../../components/layout/BaseLayout.astro';
+
+const lang = 'ru';
+---
+
+<BaseLayout title="Обо мне" description="О Nikita Paladi и личном архиве." lang={lang}>
+  <section class="page-hero">
+    <p class="eyebrow">Личный архив</p>
+    <h1>Обо мне</h1>
+    <p>
+      Этот личный архив собирает заметки, ссылки, отзывы, посещенные места,
+      проекты и рабочие материалы в одном спокойном доме.
+    </p>
+  </section>
+
+  <section class="page-section content-list" aria-label="Разделы обо мне">
+    <article class="text-panel glass-card">
+      <h2>Фон</h2>
+      <p>Здесь будет короткая история о контексте, работе и повторяющихся интересах.</p>
+    </article>
+    <article class="text-panel glass-card">
+      <h2>Интересы</h2>
+      <p>Кино, книги, города, системы, визуальная культура, технологии и память.</p>
+    </article>
+    <article class="text-panel glass-card">
+      <h2>Текущий фокус</h2>
+      <p>Сначала прочная структура архива, затем коллекции, заметки и более подробные записи.</p>
+    </article>
+  </section>
+</BaseLayout>
