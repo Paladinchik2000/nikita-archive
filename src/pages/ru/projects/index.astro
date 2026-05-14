@@ -1,0 +1,40 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../components/layout/BaseLayout.astro';
+import ArchiveCard from '../../../components/ui/ArchiveCard.astro';
+import { getContentSlug, useTranslations } from '../../../i18n/utils';
+
+const lang = 'ru';
+const t = useTranslations(lang);
+const projects = (await getCollection('projects')).filter((project) => project.data.lang === lang).sort(
+  (a, b) => (b.data.year ?? 0) - (a.data.year ?? 0),
+);
+
+const getEntrySlug = (entry) => getContentSlug(entry);
+---
+
+<BaseLayout title="Проекты" description="Выбранные проекты, эксперименты и вещи в работе." lang={lang}>
+  <section class="page-hero">
+    <p class="eyebrow">Работа</p>
+    <h1>Проекты</h1>
+    <p>Выбранные проекты, эксперименты и вещи, которые я строю.</p>
+  </section>
+
+  <section class="page-section placeholder-grid" aria-label="Записи о проектах">
+    {
+      projects.map((project) => (
+        <ArchiveCard
+          title={project.data.title}
+          description={project.data.description}
+          href={`/ru/projects/${getEntrySlug(project)}`}
+          eyebrow={project.data.status ?? 'Проект'}
+          cover={project.data.cover}
+          meta={[project.data.year]}
+          chips={project.data.tags}
+          actionLabel={t('common.readNote')}
+          noCoverLabel={t('common.noCover')}
+        />
+      ))
+    }
+  </section>
+</BaseLayout>

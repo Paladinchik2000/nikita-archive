@@ -1,14 +1,19 @@
 ---
 import BaseLayout from '../components/layout/BaseLayout.astro';
+import { useTranslations } from '../i18n/utils';
+
+const lang = 'en';
+const t = useTranslations(lang);
 ---
 
 <BaseLayout
-  title="CV"
+  title={t('pages.cv')}
   description="A concise overview of experience, projects, and skills."
+  lang={lang}
 >
   <section class="page-hero">
     <p class="eyebrow">Work</p>
-    <h1>CV</h1>
+    <h1>{t('pages.cv')}</h1>
     <p>A concise overview of experience, projects, and skills.</p>
     <div class="page-actions">
       <a class="button button-primary" href="/files/cv.pdf">Open PDF</a>

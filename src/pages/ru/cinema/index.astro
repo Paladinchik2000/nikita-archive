@@ -1,10 +1,10 @@
 ---
 import { getCollection } from 'astro:content';
-import BaseLayout from '../../components/layout/BaseLayout.astro';
-import ArchiveCard from '../../components/ui/ArchiveCard.astro';
-import { getContentSlug, useTranslations } from '../../i18n/utils';
+import BaseLayout from '../../../components/layout/BaseLayout.astro';
+import ArchiveCard from '../../../components/ui/ArchiveCard.astro';
+import { getContentSlug, useTranslations } from '../../../i18n/utils';
 
-const lang = 'en';
+const lang = 'ru';
 const t = useTranslations(lang);
 const movies = (await getCollection('movies')).filter((movie) => movie.data.lang === lang).sort(
   (a, b) => b.data.year - a.data.year,
@@ -13,24 +13,20 @@ const movies = (await getCollection('movies')).filter((movie) => movie.data.lang
 const getEntrySlug = (entry) => getContentSlug(entry);
 ---
 
-<BaseLayout
-  title="Cinema"
-  description="Films watched, remembered, questioned, or returned to."
-  lang={lang}
->
+<BaseLayout title="Кино" description="Фильмы, которые я смотрел, запомнил, ставил под вопрос или пересматривал." lang={lang}>
   <section class="page-hero">
-    <p class="eyebrow">Reviews</p>
-    <h1>Cinema</h1>
-    <p>Films I watched, remembered, questioned, or returned to.</p>
+    <p class="eyebrow">Отзывы</p>
+    <h1>Кино</h1>
+    <p>Фильмы, которые я смотрел, запомнил, ставил под вопрос или пересматривал.</p>
   </section>
 
-  <section class="page-section placeholder-grid" aria-label="Cinema entries">
+  <section class="page-section placeholder-grid" aria-label="Записи о кино">
     {
       movies.map((movie) => (
         <ArchiveCard
           title={movie.data.title}
           description={movie.data.description}
-          href={`/cinema/${getEntrySlug(movie)}`}
+          href={`/ru/cinema/${getEntrySlug(movie)}`}
           eyebrow={movie.data.year}
           cover={movie.data.cover}
           meta={[movie.data.rating && `${movie.data.rating}/10`, movie.data.favorite && t('common.favorite')]}

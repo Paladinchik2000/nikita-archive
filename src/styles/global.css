@@ -167,7 +167,7 @@ p {
 }
 
 .site-nav a,
-.language-switcher span {
+.language-switcher a {
   min-height: 2.15rem;
   padding: 0.42rem 0.72rem;
   color: var(--color-muted);
@@ -195,12 +195,12 @@ p {
   border-radius: 999px;
 }
 
-.language-switcher span {
+.language-switcher a {
   display: inline-flex;
   align-items: center;
 }
 
-.language-switcher span[aria-current="true"] {
+.language-switcher a[aria-current="true"] {
   color: #11170d;
   background: var(--color-acid-green);
 }

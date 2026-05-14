@@ -1,40 +1,44 @@
 ---
 import BaseLayout from '../components/layout/BaseLayout.astro';
 import Card from '../components/ui/Card.astro';
+import { useTranslations } from '../i18n/utils';
+
+const lang = 'en';
+const t = useTranslations(lang);
 
 const sections = [
   {
-    title: 'About',
+    title: t('pages.about'),
     description: 'A concise note on background, interests, and current direction.',
     href: '/about',
     eyebrow: 'Profile',
   },
   {
-    title: 'Cinema',
+    title: t('pages.cinema'),
     description: 'Films watched, remembered, questioned, or returned to.',
     href: '/cinema',
     eyebrow: 'Reviews',
   },
   {
-    title: 'Library',
+    title: t('pages.library'),
     description: 'Books, notes, ideas, and short reflections gathered over time.',
     href: '/library',
     eyebrow: 'Reading',
   },
   {
-    title: 'Places',
+    title: t('pages.places'),
     description: 'Visited cities and places, collected as an evolving archive.',
     href: '/places',
     eyebrow: 'Travel',
   },
   {
-    title: 'Projects',
+    title: t('pages.projects'),
     description: 'Selected work, experiments, and things currently being built.',
     href: '/projects',
     eyebrow: 'Making',
   },
   {
-    title: 'CV',
+    title: t('pages.cv'),
     description: 'A compact overview of experience, projects, and skills.',
     href: '/cv',
     eyebrow: 'Work',
@@ -43,27 +47,28 @@ const sections = [
 ---
 
 <BaseLayout
-  title="Nikita Paladi"
-  description="A personal archive of films, books, places, projects, and ideas."
+  title={t('home.title')}
+  description={t('home.description')}
+  lang={lang}
 >
   <section class="hero" aria-labelledby="home-title">
     <div>
       <img class="hero-mark" src="/images/brand/logo-p.png" alt="" width="136" height="136" />
-      <p class="eyebrow">Personal Archive</p>
-      <h1 id="home-title">Nikita Paladi</h1>
-      <p>A personal archive of films, books, places, projects, and ideas.</p>
+      <p class="eyebrow">{t('common.personalArchive')}</p>
+      <h1 id="home-title">{t('home.title')}</h1>
+      <p>{t('home.description')}</p>
       <div class="hero-actions">
-        <a class="button button-primary" href="/about">Enter Archive</a>
-        <a class="button button-secondary" href="/cv">View CV</a>
+        <a class="button button-primary" href="/about">{t('home.enterArchive')}</a>
+        <a class="button button-secondary" href="/cv">{t('home.viewCv')}</a>
       </div>
     </div>
   </section>
 
   <section class="section-block" aria-labelledby="archive-sections">
     <div class="section-heading">
-      <p class="eyebrow">Index</p>
-      <h2 id="archive-sections">Archive sections</h2>
-      <p>Quiet rooms for personal notes, references, reviews, and selected work.</p>
+      <p class="eyebrow">{t('common.index')}</p>
+      <h2 id="archive-sections">{t('home.sectionsTitle')}</h2>
+      <p>{t('home.sectionsDescription')}</p>
     </div>
     <div class="section-grid">
       {sections.map((section) => <Card {...section} />)}

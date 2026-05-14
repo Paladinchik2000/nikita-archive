@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../../components/layout/BaseLayout.astro';
+import { useTranslations } from '../../i18n/utils';
+
+const lang = 'ru';
+const t = useTranslations(lang);
+---
+
+<BaseLayout title={t('pages.cv')} description="Краткий обзор опыта, проектов и навыков." lang={lang}>
+  <section class="page-hero">
+    <p class="eyebrow">Работа</p>
+    <h1>{t('pages.cv')}</h1>
+    <p>Краткий обзор опыта, проектов и навыков.</p>
+    <div class="page-actions">
+      <a class="button button-primary" href="/files/cv.pdf">Открыть PDF</a>
+    </div>
+  </section>
+
+  <section class="page-section content-list" aria-label="CV">
+    <article class="text-panel glass-card">
+      <h2>Опыт</h2>
+      <p>Здесь появятся выбранный опыт и краткие описания ролей.</p>
+    </article>
+    <article class="text-panel glass-card">
+      <h2>Проекты</h2>
+      <p>Работы и проектные акценты будут связаны с архивом.</p>
+    </article>
+    <article class="text-panel glass-card">
+      <h2>Навыки</h2>
+      <p>Краткий список навыков будет уточняться вместе с содержанием CV.</p>
+    </article>
+  </section>
+</BaseLayout>

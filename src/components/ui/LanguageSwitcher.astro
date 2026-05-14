@@ -1,4 +1,16 @@
-<div class="language-switcher" aria-label="Language switcher placeholder">
-  <span aria-current="true">EN</span>
-  <span>RU</span>
+---
+import type { Locale } from '../../i18n/ui';
+
+interface Props {
+  lang?: Locale;
+  currentUrl: string;
+  alternateUrl: string;
+}
+
+const { lang = 'en', currentUrl, alternateUrl } = Astro.props;
+---
+
+<div class="language-switcher" aria-label="Language switcher">
+  <a href={lang === 'en' ? currentUrl : alternateUrl} aria-current={lang === 'en' ? 'true' : undefined}>EN</a>
+  <a href={lang === 'ru' ? currentUrl : alternateUrl} aria-current={lang === 'ru' ? 'true' : undefined}>RU</a>
 </div>

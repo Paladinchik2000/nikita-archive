@@ -1,13 +1,13 @@
 ---
 import { getCollection, render } from 'astro:content';
-import BaseLayout from '../../components/layout/BaseLayout.astro';
-import { getContentSlug, useTranslations } from '../../i18n/utils';
+import BaseLayout from '../../../components/layout/BaseLayout.astro';
+import { getContentSlug, useTranslations } from '../../../i18n/utils';
 
-const lang = 'en';
+const lang = 'ru';
 const t = useTranslations(lang);
 
 export async function getStaticPaths() {
-  const projects = (await getCollection('projects')).filter((project) => project.data.lang === 'en');
+  const projects = (await getCollection('projects')).filter((project) => project.data.lang === 'ru');
 
   return projects.map((project) => ({
     params: { slug: getContentSlug(project) },
@@ -20,19 +20,15 @@ const { Content } = await render(project);
 const coverStyle = project.data.cover ? `--cover-image: url("${project.data.cover}")` : undefined;
 ---
 
-<BaseLayout
-  title={project.data.title}
-  description={project.data.description ?? `${project.data.title} project note.`}
-  lang={lang}
->
-  <a class="back-link" href="/projects">{t('common.back.projects')}</a>
+<BaseLayout title={project.data.title} description={project.data.description ?? `${project.data.title} заметка о проекте.`} lang={lang}>
+  <a class="back-link" href="/ru/projects">{t('common.back.projects')}</a>
 
   <div class:list={['detail-cover', { 'has-cover': project.data.cover }]} style={coverStyle} aria-hidden="true">
     {!project.data.cover && <span>{t('common.noCover')}</span>}
   </div>
 
   <section class="page-hero detail-hero">
-    <p class="eyebrow">Projects</p>
+    <p class="eyebrow">Проекты</p>
     <h1>{project.data.title}</h1>
     <div class="detail-meta">
       {project.data.year && <span>{project.data.year}</span>}

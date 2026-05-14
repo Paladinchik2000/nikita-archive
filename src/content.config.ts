@@ -5,6 +5,8 @@ const movies = defineCollection({
   loader: glob({ pattern: '**/*.mdx', base: './src/content/movies' }),
   schema: z.object({
     title: z.string(),
+    lang: z.enum(['en', 'ru']).default('en'),
+    translationKey: z.string().optional(),
     year: z.number(),
     rating: z.number().min(0).max(10).optional(),
     genres: z.array(z.string()).optional(),
@@ -19,6 +21,8 @@ const books = defineCollection({
   loader: glob({ pattern: '**/*.mdx', base: './src/content/books' }),
   schema: z.object({
     title: z.string(),
+    lang: z.enum(['en', 'ru']).default('en'),
+    translationKey: z.string().optional(),
     author: z.string(),
     year: z.number().optional(),
     rating: z.number().min(0).max(10).optional(),
@@ -34,6 +38,8 @@ const places = defineCollection({
   loader: glob({ pattern: '**/*.mdx', base: './src/content/places' }),
   schema: z.object({
     title: z.string(),
+    lang: z.enum(['en', 'ru']).default('en'),
+    translationKey: z.string().optional(),
     country: z.string(),
     city: z.string().optional(),
     coordinates: z.tuple([z.number(), z.number()]).optional(),
@@ -48,6 +54,8 @@ const projects = defineCollection({
   loader: glob({ pattern: '**/*.mdx', base: './src/content/projects' }),
   schema: z.object({
     title: z.string(),
+    lang: z.enum(['en', 'ru']).default('en'),
+    translationKey: z.string().optional(),
     year: z.number().optional(),
     status: z.enum(['idea', 'in-progress', 'live', 'paused', 'archived']).optional(),
     cover: z.string().optional(),
