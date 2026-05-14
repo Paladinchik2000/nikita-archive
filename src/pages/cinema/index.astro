@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../components/layout/BaseLayout.astro';
+import ArchiveCard from '../../components/ui/ArchiveCard.astro';
 
 const movies = (await getCollection('movies')).sort(
   (a, b) => b.data.year - a.data.year,
@@ -22,21 +23,15 @@ const getEntrySlug = (entry) => entry.id;
   <section class="page-section placeholder-grid" aria-label="Cinema entries">
     {
       movies.map((movie) => (
-        <a class="archive-card glass-card" href={`/cinema/${getEntrySlug(movie)}`}>
-          <span class="card-eyebrow">{movie.data.year}</span>
-          <h3>{movie.data.title}</h3>
-          <div class="meta-row">
-            {movie.data.rating && <span>{movie.data.rating}/10</span>}
-            {movie.data.favorite && <span>Favorite</span>}
-          </div>
-          {movie.data.genres && (
-            <div class="chip-list">
-              {movie.data.genres.map((genre) => <span class="chip">{genre}</span>)}
-            </div>
-          )}
-          {movie.data.description && <p>{movie.data.description}</p>}
-          <span class="card-link">Read note</span>
-        </a>
+        <ArchiveCard
+          title={movie.data.title}
+          description={movie.data.description}
+          href={`/cinema/${getEntrySlug(movie)}`}
+          eyebrow={movie.data.year}
+          cover={movie.data.cover}
+          meta={[movie.data.rating && `${movie.data.rating}/10`, movie.data.favorite && 'Favorite']}
+          chips={movie.data.genres}
+        />
       ))
     }
   </section>

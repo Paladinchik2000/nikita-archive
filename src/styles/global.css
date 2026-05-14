@@ -342,6 +342,53 @@ p {
   padding: clamp(1.1rem, 2.8vw, 1.45rem);
 }
 
+.archive-entry-card {
+  min-height: 22rem;
+  padding: 0;
+  overflow: hidden;
+}
+
+.archive-card-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: clamp(1.1rem, 2.8vw, 1.45rem);
+}
+
+.archive-cover,
+.detail-cover {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  color: rgba(243, 241, 232, 0.62);
+  font-size: 0.82rem;
+  font-weight: 800;
+  background:
+    radial-gradient(circle at 22% 20%, rgba(183, 240, 0, 0.18), transparent 36%),
+    radial-gradient(circle at 76% 30%, rgba(240, 106, 36, 0.22), transparent 42%),
+    linear-gradient(145deg, rgba(24, 63, 43, 0.92), rgba(5, 6, 7, 0.96));
+}
+
+.archive-cover.has-cover,
+.detail-cover.has-cover {
+  background-image:
+    linear-gradient(180deg, rgba(5, 6, 7, 0.08), rgba(5, 6, 7, 0.46)),
+    var(--cover-image),
+    radial-gradient(circle at 22% 20%, rgba(183, 240, 0, 0.18), transparent 36%),
+    radial-gradient(circle at 76% 30%, rgba(240, 106, 36, 0.22), transparent 42%),
+    linear-gradient(145deg, rgba(24, 63, 43, 0.92), rgba(5, 6, 7, 0.96));
+  background-position: center;
+  background-size: cover;
+}
+
+.archive-cover {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
 a.archive-card {
   transition:
     transform 160ms ease,
@@ -430,6 +477,15 @@ a.archive-card:hover {
 
 .detail-hero {
   padding-top: clamp(2rem, 5vw, 4rem);
+}
+
+.detail-cover {
+  width: min(100%, 900px);
+  aspect-ratio: 16 / 7;
+  margin: 1rem 0 0;
+  border: 1px solid var(--color-glass-border);
+  border-radius: var(--radius-card);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.26);
 }
 
 .back-link {

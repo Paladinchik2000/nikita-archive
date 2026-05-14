@@ -1,0 +1,52 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+  href: string;
+  eyebrow?: string | number;
+  cover?: string;
+  meta?: Array<string | number | false | undefined>;
+  chips?: string[];
+  actionLabel?: string;
+}
+
+const {
+  title,
+  description,
+  href,
+  eyebrow,
+  cover,
+  meta = [],
+  chips = [],
+  actionLabel = 'Read note',
+} = Astro.props;
+
+const visibleMeta = meta.filter(Boolean);
+const coverStyle = cover ? `--cover-image: url("${cover}")` : undefined;
+---
+
+<a class="archive-card archive-entry-card glass-card" href={href}>
+  <div class:list={['archive-cover', { 'has-cover': cover }]} style={coverStyle} aria-hidden="true">
+    {!cover && <span>No cover yet</span>}
+  </div>
+  <div class="archive-card-body">
+    {eyebrow && <span class="card-eyebrow">{eyebrow}</span>}
+    <h3>{title}</h3>
+    {
+      visibleMeta.length > 0 && (
+        <div class="meta-row">
+          {visibleMeta.map((item) => <span>{item}</span>)}
+        </div>
+      )
+    }
+    {
+      chips.length > 0 && (
+        <div class="chip-list">
+          {chips.map((chip) => <span class="chip">{chip}</span>)}
+        </div>
+      )
+    }
+    {description && <p>{description}</p>}
+    <span class="card-link">{actionLabel}</span>
+  </div>
+</a>
