@@ -13,6 +13,7 @@ export async function getStaticPaths() {
 
 const { project } = Astro.props;
 const { Content } = await render(project);
+const coverStyle = project.data.cover ? `--cover-image: url("${project.data.cover}")` : undefined;
 ---
 
 <BaseLayout
@@ -20,6 +21,10 @@ const { Content } = await render(project);
   description={project.data.description ?? `${project.data.title} project note.`}
 >
   <a class="back-link" href="/projects">Back to projects</a>
+
+  <div class:list={['detail-cover', { 'has-cover': project.data.cover }]} style={coverStyle} aria-hidden="true">
+    {!project.data.cover && <span>No cover yet</span>}
+  </div>
 
   <section class="page-hero detail-hero">
     <p class="eyebrow">Projects</p>

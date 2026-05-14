@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../components/layout/BaseLayout.astro';
+import ArchiveCard from '../../components/ui/ArchiveCard.astro';
 
 const books = (await getCollection('books')).sort(
   (a, b) => (b.data.year ?? 0) - (a.data.year ?? 0),
@@ -22,22 +23,15 @@ const getEntrySlug = (entry) => entry.id;
   <section class="page-section placeholder-grid" aria-label="Library entries">
     {
       books.map((book) => (
-        <a class="archive-card glass-card" href={`/library/${getEntrySlug(book)}`}>
-          <span class="card-eyebrow">{book.data.author}</span>
-          <h3>{book.data.title}</h3>
-          <div class="meta-row">
-            {book.data.year && <span>{book.data.year}</span>}
-            {book.data.rating && <span>{book.data.rating}/10</span>}
-            {book.data.favorite && <span>Favorite</span>}
-          </div>
-          {book.data.genres && (
-            <div class="chip-list">
-              {book.data.genres.map((genre) => <span class="chip">{genre}</span>)}
-            </div>
-          )}
-          {book.data.description && <p>{book.data.description}</p>}
-          <span class="card-link">Read note</span>
-        </a>
+        <ArchiveCard
+          title={book.data.title}
+          description={book.data.description}
+          href={`/library/${getEntrySlug(book)}`}
+          eyebrow={book.data.author}
+          cover={book.data.cover}
+          meta={[book.data.year, book.data.rating && `${book.data.rating}/10`, book.data.favorite && 'Favorite']}
+          chips={book.data.genres}
+        />
       ))
     }
   </section>

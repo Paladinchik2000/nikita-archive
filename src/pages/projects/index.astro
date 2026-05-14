@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../components/layout/BaseLayout.astro';
+import ArchiveCard from '../../components/ui/ArchiveCard.astro';
 
 const projects = (await getCollection('projects')).sort(
   (a, b) => (b.data.year ?? 0) - (a.data.year ?? 0),
@@ -22,20 +23,15 @@ const getEntrySlug = (entry) => entry.id;
   <section class="page-section placeholder-grid" aria-label="Project entries">
     {
       projects.map((project) => (
-        <a class="archive-card glass-card" href={`/projects/${getEntrySlug(project)}`}>
-          <span class="card-eyebrow">{project.data.status ?? 'Project'}</span>
-          <h3>{project.data.title}</h3>
-          <div class="meta-row">
-            {project.data.year && <span>{project.data.year}</span>}
-          </div>
-          {project.data.tags && (
-            <div class="chip-list">
-              {project.data.tags.map((tag) => <span class="chip">{tag}</span>)}
-            </div>
-          )}
-          {project.data.description && <p>{project.data.description}</p>}
-          <span class="card-link">Read note</span>
-        </a>
+        <ArchiveCard
+          title={project.data.title}
+          description={project.data.description}
+          href={`/projects/${getEntrySlug(project)}`}
+          eyebrow={project.data.status ?? 'Project'}
+          cover={project.data.cover}
+          meta={[project.data.year]}
+          chips={project.data.tags}
+        />
       ))
     }
   </section>

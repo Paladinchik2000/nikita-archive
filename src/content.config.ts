@@ -6,7 +6,7 @@ const movies = defineCollection({
   schema: z.object({
     title: z.string(),
     year: z.number(),
-    rating: z.number().optional(),
+    rating: z.number().min(0).max(10).optional(),
     genres: z.array(z.string()).optional(),
     cover: z.string().optional(),
     favorite: z.boolean().optional().default(false),
@@ -21,7 +21,7 @@ const books = defineCollection({
     title: z.string(),
     author: z.string(),
     year: z.number().optional(),
-    rating: z.number().optional(),
+    rating: z.number().min(0).max(10).optional(),
     genres: z.array(z.string()).optional(),
     cover: z.string().optional(),
     favorite: z.boolean().optional().default(false),
