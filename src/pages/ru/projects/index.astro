@@ -1,40 +1,90 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../../components/layout/BaseLayout.astro';
-import ArchiveCard from '../../../components/ui/ArchiveCard.astro';
-import { getContentSlug, useTranslations } from '../../../i18n/utils';
+import { getContentSlug } from '../../../i18n/utils';
 
 const lang = 'ru';
-const t = useTranslations(lang);
-const projects = (await getCollection('projects')).filter((project) => project.data.lang === lang).sort(
-  (a, b) => (b.data.year ?? 0) - (a.data.year ?? 0),
-);
+const projects = (await getCollection('projects'))
+  .filter((project) => project.data.lang === lang)
+  .sort((a, b) => Number(b.data.featured) - Number(a.data.featured) || (b.data.year ?? 0) - (a.data.year ?? 0));
 
+const featuredProjects = projects.filter((project) => project.data.featured);
 const getEntrySlug = (entry) => getContentSlug(entry);
+const getChips = (project) => [...(project.data.stack ?? []), ...(project.data.tags ?? [])].slice(0, 6);
 ---
 
-<BaseLayout title="Проекты" description="Выбранные проекты, эксперименты и вещи в работе." lang={lang}>
+<BaseLayout
+  title="Проекты"
+  description="Рабочее пространство для идей, экспериментов и проектов, которые я создаю."
+  lang={lang}
+>
   <section class="page-hero">
     <p class="eyebrow">Работа</p>
     <h1>Проекты</h1>
-    <p>Выбранные проекты, эксперименты и вещи, которые я строю.</p>
+    <p>Рабочее пространство для идей, экспериментов и проектов, которые я создаю.</p>
   </section>
 
-  <section class="page-section placeholder-grid" aria-label="Записи о проектах">
-    {
-      projects.map((project) => (
-        <ArchiveCard
-          title={project.data.title}
-          description={project.data.description}
-          href={`/ru/projects/${getEntrySlug(project)}`}
-          eyebrow={project.data.status ?? 'Проект'}
-          cover={project.data.cover}
-          meta={[project.data.year]}
-          chips={project.data.tags}
-          actionLabel={t('common.readNote')}
-          noCoverLabel={t('common.noCover')}
-        />
-      ))
-    }
+  {
+    featuredProjects.length > 0 && (
+      <section class="section-block" aria-labelledby="featured-projects">
+        <div class="section-heading">
+          <p class="eyebrow">Избранное</p>
+          <h2 id="featured-projects">Избранные проекты</h2>
+        </div>
+        <div class="project-grid">
+          {featuredProjects.map((project) => (
+            <article class="project-card glass-card">
+              <a class="project-card-main" href={`/ru/projects/${getEntrySlug(project)}`}>
+                <span class="card-eyebrow">{project.data.status ?? 'Проект'}</span>
+                <h3>{project.data.title}</h3>
+                <div class="meta-row">
+                  {project.data.year && <span>{project.data.year}</span>}
+                  {project.data.role && <span>{project.data.role}</span>}
+                </div>
+                {project.data.description && <p>{project.data.description}</p>}
+                <div class="chip-list">
+                  {getChips(project).map((chip) => <span class="chip">{chip}</span>)}
+                </div>
+                <span class="card-link">Открыть проект</span>
+              </a>
+              <div class="external-links project-card-links">
+                {project.data.url && <a class="button button-secondary" href={project.data.url}>Сайт</a>}
+                {project.data.github && <a class="button button-secondary" href={project.data.github}>GitHub</a>}
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  <section class="page-section" aria-labelledby="all-projects">
+    <div class="section-heading">
+      <p class="eyebrow">Архив</p>
+      <h2 id="all-projects">Все проекты</h2>
+    </div>
+    <div class="project-grid">
+      {projects.map((project) => (
+        <article class="project-card glass-card">
+          <a class="project-card-main" href={`/ru/projects/${getEntrySlug(project)}`}>
+            <span class="card-eyebrow">{project.data.status ?? 'Проект'}</span>
+            <h3>{project.data.title}</h3>
+            <div class="meta-row">
+              {project.data.year && <span>{project.data.year}</span>}
+              {project.data.role && <span>{project.data.role}</span>}
+            </div>
+            {project.data.description && <p>{project.data.description}</p>}
+            <div class="chip-list">
+              {getChips(project).map((chip) => <span class="chip">{chip}</span>)}
+            </div>
+            <span class="card-link">Открыть проект</span>
+          </a>
+          <div class="external-links project-card-links">
+            {project.data.url && <a class="button button-secondary" href={project.data.url}>Сайт</a>}
+            {project.data.github && <a class="button button-secondary" href={project.data.github}>GitHub</a>}
+          </div>
+        </article>
+      ))}
+    </div>
   </section>
 </BaseLayout>

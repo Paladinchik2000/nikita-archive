@@ -18,6 +18,10 @@ export async function getStaticPaths() {
 const { project } = Astro.props;
 const { Content } = await render(project);
 const coverStyle = project.data.cover ? `--cover-image: url("${project.data.cover}")` : undefined;
+const dateRange = [project.data.startDate, project.data.endDate].filter(Boolean).join(' - ');
+const stack = project.data.stack ?? [];
+const tags = project.data.tags ?? [];
+const highlights = project.data.highlights ?? [];
 ---
 
 <BaseLayout
@@ -35,19 +39,37 @@ const coverStyle = project.data.cover ? `--cover-image: url("${project.data.cove
     <p class="eyebrow">Projects</p>
     <h1>{project.data.title}</h1>
     <div class="detail-meta">
-      {project.data.year && <span>{project.data.year}</span>}
       {project.data.status && <span>{project.data.status}</span>}
+      {project.data.year && <span>{project.data.year}</span>}
+      {dateRange && <span>{dateRange}</span>}
+      {project.data.role && <span>{project.data.role}</span>}
     </div>
-    {project.data.tags && (
-      <div class="chip-list">
-        {project.data.tags.map((tag) => <span class="chip">{tag}</span>)}
-      </div>
-    )}
     {project.data.description && <p>{project.data.description}</p>}
     <div class="external-links">
-      {project.data.url && <a class="button button-secondary" href={project.data.url}>{t('common.openProject')}</a>}
-      {project.data.github && <a class="button button-secondary" href={project.data.github}>{t('common.github')}</a>}
+      {project.data.url && <a class="button button-primary" href={project.data.url}>Live Site</a>}
+      {project.data.github && <a class="button button-secondary" href={project.data.github}>GitHub</a>}
     </div>
+  </section>
+
+  <section class="project-detail-grid">
+    <article class="text-panel glass-card">
+      <h2>Stack</h2>
+      <div class="chip-list">
+        {[...stack, ...tags].map((chip) => <span class="chip">{chip}</span>)}
+      </div>
+    </article>
+    <article class="text-panel glass-card">
+      <h2>Highlights</h2>
+      {
+        highlights.length > 0 ? (
+          <ul class="clean-list">
+            {highlights.map((highlight) => <li>{highlight}</li>)}
+          </ul>
+        ) : (
+          <p>Highlights can be added later.</p>
+        )
+      }
+    </article>
   </section>
 
   <article class="prose text-panel glass-card">
