@@ -1,0 +1,118 @@
+---
+import 'leaflet/dist/leaflet.css';
+import type { Locale } from '../../i18n/ui';
+
+interface MapPlace {
+  title: string;
+  location: string;
+  description?: string;
+  href: string;
+  coordinates: [number, number];
+  mapZoom?: number;
+}
+
+interface Props {
+  places: MapPlace[];
+  lang: Locale;
+}
+
+const { places, lang } = Astro.props;
+const mapId = `places-map-${Math.random().toString(36).slice(2)}`;
+const emptyText = lang === 'ru' ? 'Нет мест с координатами.' : 'No mapped places yet.';
+const openLabel = lang === 'ru' ? 'Открыть место' : 'Open place';
+---
+
+<section class="places-map-panel glass-card" aria-label={lang === 'ru' ? 'Карта мест' : 'Places map'}>
+  <div
+    id={mapId}
+    class="places-map"
+    data-places-map
+    data-places={JSON.stringify(places)}
+    data-empty-text={emptyText}
+    data-open-label={openLabel}
+  >
+    <div class="places-map-empty">{emptyText}</div>
+  </div>
+</section>
+
+<script>
+  const escapeHtml = (value) =>
+    String(value ?? '')
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;')
+      .replaceAll('"', '&quot;')
+      .replaceAll("'", '&#039;');
+
+  const initializePlacesMap = async (container) => {
+    const rawPlaces = container.dataset.places;
+    const places = rawPlaces ? JSON.parse(rawPlaces) : [];
+    const emptyText = container.dataset.emptyText || 'No mapped places yet.';
+    const openLabel = container.dataset.openLabel || 'Open place';
+
+    if (!Array.isArray(places) || places.length === 0) {
+      container.innerHTML = `<div class="places-map-empty">${escapeHtml(emptyText)}</div>`;
+      return;
+    }
+
+    const leaflet = await import('leaflet');
+    const L = leaflet.default ?? leaflet;
+    const map = L.map(container, {
+      scrollWheelZoom: false,
+      zoomControl: true,
+      attributionControl: true,
+    });
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; OpenStreetMap contributors',
+    }).addTo(map);
+
+    const markerIcon = L.divIcon({
+      className: 'archive-map-marker',
+      html: '<span></span>',
+      iconSize: [24, 24],
+      iconAnchor: [12, 12],
+      popupAnchor: [0, -14],
+    });
+
+    const bounds = [];
+
+    places.forEach((place) => {
+      if (!Array.isArray(place.coordinates) || place.coordinates.length !== 2) return;
+
+      const [lat, lng] = place.coordinates.map(Number);
+      if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
+
+      bounds.push([lat, lng]);
+
+      const popup = `
+        <article class="map-popup-card">
+          <h3>${escapeHtml(place.title)}</h3>
+          <p class="map-popup-location">${escapeHtml(place.location)}</p>
+          ${place.description ? `<p>${escapeHtml(place.description)}</p>` : ''}
+          <a href="${escapeHtml(place.href)}">${escapeHtml(openLabel)}</a>
+        </article>
+      `;
+
+      L.marker([lat, lng], { icon: markerIcon }).addTo(map).bindPopup(popup);
+    });
+
+    if (bounds.length > 1) {
+      map.fitBounds(bounds, { padding: [42, 42], maxZoom: 8 });
+      return;
+    }
+
+    if (bounds.length === 1) {
+      const zoom = Number.isFinite(Number(places[0].mapZoom)) ? Number(places[0].mapZoom) : 10;
+      map.setView(bounds[0], zoom);
+      return;
+    }
+
+    container.innerHTML = `<div class="places-map-empty">${escapeHtml(emptyText)}</div>`;
+  };
+
+  document.querySelectorAll('[data-places-map]').forEach((container) => {
+    initializePlacesMap(container);
+  });
+</script>

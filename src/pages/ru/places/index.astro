@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../../components/layout/BaseLayout.astro';
 import ArchiveCard from '../../../components/ui/ArchiveCard.astro';
+import PlacesMap from '../../../components/places/PlacesMap.astro';
 import { getContentSlug, useTranslations } from '../../../i18n/utils';
 
 const lang = 'ru';
@@ -11,6 +12,20 @@ const places = (await getCollection('places')).filter((place) => place.data.lang
 );
 
 const getEntrySlug = (entry) => getContentSlug(entry);
+const hasValidCoordinates = (coordinates) =>
+  Array.isArray(coordinates)
+  && coordinates.length === 2
+  && coordinates.every((coordinate) => Number.isFinite(Number(coordinate)));
+const mapPlaces = places
+  .filter((place) => hasValidCoordinates(place.data.coordinates))
+  .map((place) => ({
+    title: place.data.title,
+    location: [place.data.city, place.data.country].filter(Boolean).join(', '),
+    description: place.data.description,
+    href: `/ru/places/${getEntrySlug(place)}`,
+    coordinates: place.data.coordinates,
+    mapZoom: place.data.mapZoom,
+  }));
 ---
 
 <BaseLayout title="Места" description="Посещенные места и будущие заметки для карты." lang={lang}>
@@ -19,6 +34,8 @@ const getEntrySlug = (entry) => getContentSlug(entry);
     <h1>Места</h1>
     <p>Здесь позже появится карта мест, которые я посетил.</p>
   </section>
+
+  <PlacesMap places={mapPlaces} lang={lang} />
 
   <section class="page-section placeholder-grid" aria-label="Записи о местах">
     {

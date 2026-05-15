@@ -18,6 +18,9 @@ export async function getStaticPaths() {
 const { place } = Astro.props;
 const { Content } = await render(place);
 const coverStyle = place.data.cover ? `--cover-image: url("${place.data.cover}")` : undefined;
+const gallery = place.data.gallery ?? [];
+const galleryTitle = 'Gallery';
+const galleryEmptyText = 'Gallery images will be added later.';
 ---
 
 <BaseLayout
@@ -50,4 +53,28 @@ const coverStyle = place.data.cover ? `--cover-image: url("${place.data.cover}")
   <article class="prose text-panel glass-card">
     <Content />
   </article>
+
+  <section class="page-section" aria-labelledby="place-gallery">
+    <div class="section-heading">
+      <p class="eyebrow">Photos</p>
+      <h2 id="place-gallery">{galleryTitle}</h2>
+    </div>
+    {
+      gallery.length > 0 ? (
+        <div class="gallery-grid">
+          {gallery.map((image, index) => (
+            <div
+              class="gallery-tile"
+              style={`--gallery-image: url("${image}")`}
+              aria-label={`${place.data.title} gallery image ${index + 1}`}
+            />
+          ))}
+        </div>
+      ) : (
+        <div class="text-panel glass-card gallery-empty">
+          <p>{galleryEmptyText}</p>
+        </div>
+      )
+    }
+  </section>
 </BaseLayout>
