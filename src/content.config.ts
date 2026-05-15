@@ -65,6 +65,12 @@ const projects = defineCollection({
     tags: z.array(z.string()).optional(),
     url: z.string().optional(),
     github: z.string().optional(),
+    featured: z.boolean().optional().default(false),
+    role: z.string().optional(),
+    stack: z.array(z.string()).optional(),
+    startDate: z.string().optional(),
+    endDate: z.string().optional(),
+    highlights: z.array(z.string()).optional(),
     description: z.string().optional(),
   }),
 });

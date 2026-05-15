@@ -1,33 +1,88 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../../components/layout/BaseLayout.astro';
-import { useTranslations } from '../../i18n/utils';
+import { getContentSlug } from '../../i18n/utils';
 
 const lang = 'ru';
-const t = useTranslations(lang);
+const selectedProjects = (await getCollection('projects'))
+  .filter((project) => project.data.lang === lang && project.data.featured)
+  .sort((a, b) => (b.data.year ?? 0) - (a.data.year ?? 0));
 ---
 
-<BaseLayout title={t('pages.cv')} description="Краткий обзор опыта, проектов и навыков." lang={lang}>
-  <section class="page-hero">
-    <p class="eyebrow">Работа</p>
-    <h1>{t('pages.cv')}</h1>
-    <p>Краткий обзор опыта, проектов и навыков.</p>
+<BaseLayout
+  title="CV"
+  description="Личный архив, творческие проекты, продуктовые эксперименты и веб-разработка."
+  lang={lang}
+>
+  <section class="page-hero cv-hero">
+    <p class="eyebrow">CV</p>
+    <h1>Nikita Paladi</h1>
+    <p>Личный архив, творческие проекты, продуктовые эксперименты и веб-разработка.</p>
     <div class="page-actions">
-      <a class="button button-primary" href="/files/cv.pdf">Открыть PDF</a>
+      <a class="button button-primary" href="/files/cv.pdf">Скачать CV</a>
+      <a class="button button-secondary" href="/ru/projects">Смотреть проекты</a>
     </div>
+    <p class="subtle-note">PDF-версию можно добавить позже.</p>
   </section>
 
-  <section class="page-section content-list" aria-label="CV">
-    <article class="text-panel glass-card">
-      <h2>Опыт</h2>
-      <p>Здесь появятся выбранный опыт и краткие описания ролей.</p>
+  <section class="cv-grid" aria-label="CV">
+    <article class="text-panel glass-card cv-panel-wide">
+      <h2>Профиль</h2>
+      <p>
+        Эта страница дает краткий публичный обзор архива: творческая работа,
+        продуктовые эксперименты, тексты и веб-разработка. Более точные карьерные
+        детали можно добавить позже.
+      </p>
     </article>
+
     <article class="text-panel glass-card">
-      <h2>Проекты</h2>
-      <p>Работы и проектные акценты будут связаны с архивом.</p>
+      <h2>Фокус</h2>
+      <ul class="clean-list">
+        <li>Личные архивы знаний и системы контента</li>
+        <li>Продуктовые эксперименты и структура интерфейсов</li>
+        <li>Фильмы, книги, места и короткие заметки</li>
+      </ul>
     </article>
+
     <article class="text-panel glass-card">
       <h2>Навыки</h2>
-      <p>Краткий список навыков будет уточняться вместе с содержанием CV.</p>
+      <div class="chip-list">
+        {['Astro', 'MDX', 'TypeScript', 'CSS', 'Моделирование контента', 'Дизайн интерфейсов', 'Редактура'].map((skill) => (
+          <span class="chip">{skill}</span>
+        ))}
+      </div>
+    </article>
+
+    <article class="text-panel glass-card cv-panel-wide">
+      <h2>Избранные проекты</h2>
+      <div class="cv-project-list">
+        {selectedProjects.map((project) => (
+          <a href={`/ru/projects/${getContentSlug(project)}`}>
+            <span>{project.data.year}</span>
+            <strong>{project.data.title}</strong>
+            <em>{project.data.description}</em>
+          </a>
+        ))}
+      </div>
+    </article>
+
+    <article class="text-panel glass-card">
+      <h2>Опыт / Таймлайн</h2>
+      <ul class="timeline-list">
+        <li>
+          <span>2026</span>
+          Разработка двуязычного личного архива и структуры контента.
+        </li>
+        <li>
+          <span>2025</span>
+          Исследование продуктовых прототипов, рабочих процессов и интерфейсных идей.
+        </li>
+      </ul>
+    </article>
+
+    <article class="text-panel glass-card">
+      <h2>Контакты</h2>
+      <p>Контактные данные можно добавить здесь, когда публичная версия будет готова.</p>
     </article>
   </section>
 </BaseLayout>
